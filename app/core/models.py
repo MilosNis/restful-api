@@ -41,7 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Tag(models.Model):
-    """Tag model representation"""
+    """Tag model object"""
     name = models.CharField(max_length=255)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -50,3 +50,32 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Ingredient(models.Model):
+    """Ingredient model object"""
+    name = models.CharField(max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class Recipe(models.Model):
+    """Recipe model object"""
+    title = models.CharField(max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    time_minutes = models.IntegerField()
+    link = models.CharField(max_length=255, blank=True)
+    tags = models.ManyToManyField('Tag')
+    ingredients = models.ManyToManyField('Ingredient')
+
+    def __str__(self):
+        return self.title
